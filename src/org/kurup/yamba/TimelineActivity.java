@@ -5,6 +5,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.preference.PreferenceManager;
 
 public class TimelineActivity extends Activity {
     DbHelper dbHelper;
@@ -15,7 +22,7 @@ public class TimelineActivity extends Activity {
     @Override
         protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timeline);
+        setContentView(R.layout.timeline_basic);
         
         // Find your views
         textTimeline = (TextView) findViewById(R.id.textTimeline);
@@ -50,4 +57,30 @@ public class TimelineActivity extends Activity {
             textTimeline.append(output);
         }
     }
+
+    // Called the first time the user clicks the menu button
+    @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    // Called when an options item is selected
+    @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.itemServiceStart:
+            startService(new Intent(this, UpdaterService.class));
+            break;
+        case R.id.itemServiceStop:
+            stopService(new Intent(this, UpdaterService.class));
+            break;
+        case R.id.itemPrefs:
+            startActivity(new Intent(this, PrefsActivity.class));
+            break;
+        }
+        return true;
+    }
+
 }

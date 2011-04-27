@@ -15,13 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MenuInflater;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.preference.PreferenceManager;
 
 public class StatusActivity extends Activity implements OnClickListener,
                                                         TextWatcher {
@@ -103,28 +96,4 @@ public class StatusActivity extends Activity implements OnClickListener,
     public void onTextChanged(CharSequence s, int start, int before, int count) {
     }
 
-    // Called the first time the user clicks the menu button
-    @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    // Called when an options item is selected
-    @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.itemServiceStart:
-            startService(new Intent(this, UpdaterService.class));
-            break;
-        case R.id.itemServiceStop:
-            stopService(new Intent(this, UpdaterService.class));
-            break;
-        case R.id.itemPrefs:
-            startActivity(new Intent(this, PrefsActivity.class));
-            break;
-        }
-        return true;
-    }
 }
