@@ -1,12 +1,11 @@
-** Yamba
+## Yamba
 
 This is the example project that is incrementally built in the
 'Learning Android' O'Reilly book. It's basically a twitter/statusnet
 client. 
 
-YAMBA stands for Yet Another MicroBlogging App.
-
-My initial import is just after finishing the database chapter.
+YAMBA stands for Yet Another MicroBlogging App. My initial import is
+just after finishing the database chapter.
 
 [Book
 Errata](http://oreilly.com/catalog/errata.csp?isbn=0636920010883) -
