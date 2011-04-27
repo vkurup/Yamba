@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
@@ -17,12 +18,13 @@ public class TimelineActivity extends Activity {
     DbHelper dbHelper;
     SQLiteDatabase db;
     Cursor cursor;
-    TextView textTimeline;
-    
+    ListView listTimeline;
+    SimpleCursorAdapter adapter;
+    static final String[] FROM = {DbHelper.C_
     @Override
         protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timeline_basic);
+        setContentView(R.layout.timeline);
         
         // Find your views
         textTimeline = (TextView) findViewById(R.id.textTimeline);
