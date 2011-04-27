@@ -3,7 +3,6 @@
     <string name="app_name">Yamba</string>
     <string name="titleYamba">Yamba</string>
     <string name="titleStatus">Status Update</string>
-
     <string name="hintText">Please enter your 140-character status</string>
     <string name="buttonUpdate">Post</string>
 
@@ -18,5 +17,6 @@
     <string name="titleApiRoot">API Root URL</string>
     <string name="summaryApiRoot">The URL of your server</string>
 
+    <string name="titleTimeline">Timeline</string>
 
 </resources>
