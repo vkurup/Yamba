@@ -16,6 +16,7 @@ import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.Toast;
 
 public class TimelineActivity extends BaseActivity {
+    static final String SEND_TIMELINE_NOTIFICATIONS = "org.kurup.yamba.SEND_TIMELINE_NOTIFICATIONS";
     Cursor cursor;
     ListView listTimeline;
     SimpleCursorAdapter adapter;
@@ -56,7 +57,7 @@ public class TimelineActivity extends BaseActivity {
         this.setupList();
 
         // Register the receiver
-        registerReceiver(receiver, filter);
+        registerReceiver(receiver, filter, SEND_TIMELINE_NOTIFICATIONS, null);
     }
 
     @Override

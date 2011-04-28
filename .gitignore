@@ -10,4 +10,7 @@
 
 # generated GUI files
 *R.java
-/local.properties
+gen/
+
+# local properties
+local.properties
