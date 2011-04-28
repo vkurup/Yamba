@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
@@ -19,10 +18,7 @@ public class TimelineActivity extends Activity {
     SQLiteDatabase db;
     Cursor cursor;
     ListView listTimeline;
-    SimpleCursorAdapter adapter;
-    static final String[] FROM = { DbHelper.C_CREATED_AT, DbHelper.C_USER,
-                                   DbHelper.C_TEXT };
-    static final int[] TO = { R.id.textCreatedAt, R.id.textUser, R.id.textText };
+    TimelineAdapter adapter;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +51,7 @@ public class TimelineActivity extends Activity {
         startManagingCursor(cursor);
 
         // Set up the adapter
-        adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
+        adapter = new TimelineAdapter(this, cursor);
         listTimeline.setAdapter(adapter);
     }
 
