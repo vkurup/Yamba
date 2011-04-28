@@ -15,7 +15,7 @@ public class YambaApplication extends Application implements
                                                       OnSharedPreferenceChangeListener {
     private static final String TAG = YambaApplication.class.getSimpleName();
     public Twitter twitter;
-    private SharedPreferences prefs;
+    public SharedPreferences prefs;
     private boolean serviceRunning;
     private StatusData statusData;
 
