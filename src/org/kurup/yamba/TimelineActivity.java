@@ -1,10 +1,14 @@
 package org.kurup.yamba;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.View;
 import android.text.format.DateUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.SimpleCursorAdapter;
@@ -21,6 +25,9 @@ public class TimelineActivity extends BaseActivity {
     static final int[] TO = { R.id.textCreatedAt, 
                               R.id.textUser, 
                               R.id.textText };
+    TimelineReceiver receiver;
+    IntentFilter filter;
+    YambaApplication yamba;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +35,7 @@ public class TimelineActivity extends BaseActivity {
         setContentView(R.layout.timeline);
 
         // Check whether preferences have been set
+        yamba = (YambaApplication) super.getApplication();
         if (yamba.prefs.getString("username",null) == null) {
             startActivity(new Intent(this, PrefsActivity.class));
             Toast.makeText(this, R.string.msgSetupPrefs, Toast.LENGTH_LONG).show();
@@ -35,6 +43,9 @@ public class TimelineActivity extends BaseActivity {
       
         // Find your views
         listTimeline = (ListView) findViewById(R.id.listTimeline);
+
+        receiver = new TimelineReceiver();
+        filter = new IntentFilter(UpdaterService.NEW_STATUS_INTENT);
     }
 
     @Override
@@ -43,6 +54,17 @@ public class TimelineActivity extends BaseActivity {
 
         // Setup List
         this.setupList();
+
+        // Register the receiver
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+        protected void onPause() {
+        super.onPause();
+
+        // Unregister the receiver
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -57,8 +79,8 @@ public class TimelineActivity extends BaseActivity {
     // Responsible for fetching data and setting up the list and the adapter
     private void setupList() {
         // Get the data
-        cursor = yamba.getStatusData().getStatusUpdates();
-        startManagingCursor(cursor);
+        this.cursor = yamba.getStatusData().getStatusUpdates();
+        startManagingCursor(this.cursor);
 
         // Set adapter
         adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
@@ -81,4 +103,12 @@ public class TimelineActivity extends BaseActivity {
                 return true;
             }
         };
+
+    class TimelineReceiver extends BroadcastReceiver {
+        @Override
+            public void onReceive(Context context, Intent intent) {
+            setupList();
+            Log.d("TimelineReceiver", "onReceived");
+        }
+    }
 }
