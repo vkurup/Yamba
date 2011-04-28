@@ -20,14 +20,17 @@ public class TimelineActivity extends Activity {
     Cursor cursor;
     ListView listTimeline;
     SimpleCursorAdapter adapter;
-    static final String[] FROM = {DbHelper.C_
+    static final String[] FROM = { DbHelper.C_CREATED_AT, DbHelper.C_USER,
+                                   DbHelper.C_TEXT };
+    static final int[] TO = { R.id.textCreatedAt, R.id.textUser, R.id.textText };
+
     @Override
         protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline);
         
         // Find your views
-        textTimeline = (TextView) findViewById(R.id.textTimeline);
+        listTimeline = (ListView) findViewById(R.id.listTimeline);
 
         // Connect to database
         dbHelper = new DbHelper(this);
@@ -47,17 +50,13 @@ public class TimelineActivity extends Activity {
         super.onResume();
 
         // Get the data from the database
-        cursor = db.query(DbHelper.TABLE, null, null, null, null, null, DbHelper.C_CREATED_AT + " DESC");
+        cursor = db.query(DbHelper.TABLE, null, null, null, null, null, 
+                          DbHelper.C_CREATED_AT + " DESC");
         startManagingCursor(cursor);
 
-        // Iterate over all the data and print it out
-        String user, text, output;
-        while (cursor.moveToNext()) {
-            user = cursor.getString(cursor.getColumnIndex(DbHelper.C_USER));
-            text = cursor.getString(cursor.getColumnIndex(DbHelper.C_TEXT));
-            output = String.format("%s: %s\n", user, text);
-            textTimeline.append(output);
-        }
+        // Set up the adapter
+        adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
+        listTimeline.setAdapter(adapter);
     }
 
     // Called the first time the user clicks the menu button
