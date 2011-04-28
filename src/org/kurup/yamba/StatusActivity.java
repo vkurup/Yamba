@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class StatusActivity extends Activity implements OnClickListener,
+public class StatusActivity extends BaseActivity implements OnClickListener,
                                                         TextWatcher {
     private static final String TAG = "StatusActivity";
     EditText editText;
@@ -55,7 +55,6 @@ public class StatusActivity extends Activity implements OnClickListener,
         @Override
             protected String doInBackground(String... statuses) {
             try {
-                YambaApplication yamba = ((YambaApplication) getApplication());
                 Twitter.Status status = yamba.getTwitter().updateStatus(statuses[0]);
                 return "message posted";
             } catch (TwitterException e) {
