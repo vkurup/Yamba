@@ -32,6 +32,8 @@
         <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
       </intent-filter>
     </receiver>
+    <provider android:name=".StatusProvider"
+              android:authorities="org.kurup.yamba.statusprovider" />
   </application>
   <permission android:name="org.kurup.yamba.SEND_TIMELINE_NOTIFICATIONS"
               android:label="@string/send_timeline_notifications_permission_label"
