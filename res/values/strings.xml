@@ -25,4 +25,5 @@
     <string name="receive_timeline_notifications_permission_label">Receive Timeline Notifications</string>
     <string name="receive_timeline_notifications_permission_description">Used to receive timeline data from other activities.</string>
 
+    <string name="msgLastTimelineUpdate">Last Status Update</string>
 </resources>

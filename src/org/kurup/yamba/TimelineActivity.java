@@ -54,7 +54,7 @@ public class TimelineActivity extends BaseActivity {
         super.onResume();
 
         // Setup List
-        this.setupList();
+        setupList();
 
         // Register the receiver
         registerReceiver(receiver, filter, SEND_TIMELINE_NOTIFICATIONS, null);
@@ -80,8 +80,8 @@ public class TimelineActivity extends BaseActivity {
     // Responsible for fetching data and setting up the list and the adapter
     private void setupList() {
         // Get the data
-        this.cursor = yamba.getStatusData().getStatusUpdates();
-        startManagingCursor(this.cursor);
+        cursor = yamba.getStatusData().getStatusUpdates();
+        startManagingCursor(cursor);
 
         // Set adapter
         adapter = new SimpleCursorAdapter(this, R.layout.row, cursor, FROM, TO);
