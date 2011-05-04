@@ -8,9 +8,10 @@
 # Java class files
 *.class
 
-# generated GUI files
+# generated files
 *R.java
 gen/
+bin/
 
 # local properties
 local.properties
