@@ -16,6 +16,10 @@
     <string name="summaryPassword">Please enter your password</string>
     <string name="titleApiRoot">API Root URL</string>
     <string name="summaryApiRoot">The URL of your server</string>
+    <string name="titleProvider">Location Provider</string>
+    <string name="summaryProvider">Whether and how to keep track of location</string>
+    <string name="titleUpdaterInterval">Update Frequency</string>
+    <string name="summaryUpdaterInterval">How often to fetch updates</string>
 
     <string name="titleTimeline">Timeline</string>
     <string name="msgSetupPrefs">Please set your preferences</string>
@@ -26,4 +30,27 @@
     <string name="receive_timeline_notifications_permission_description">Used to receive timeline data from other activities.</string>
 
     <string name="msgLastTimelineUpdate">Last Status Update</string>
+
+    <string-array name="providers">
+      <item>None, please</item>
+      <item>GPS via satellites</item>
+      <item>Mobile Network will do</item>
+    </string-array>
+
+    <string-array name="providerValues">
+      <item>NONE</item>
+      <item>gps</item>
+      <item>network</item>
+    </string-array>
+    <string-array name="interval">
+      <item>No updates</item>
+      <item>Every minute</item>
+      <item>Every hour</item>
+    </string-array>
+
+    <string-array name="intervalValues">
+      <item>NONE</item>
+      <item>60</item>
+      <item>3600</item>
+    </string-array>
 </resources>

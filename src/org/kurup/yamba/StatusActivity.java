@@ -2,8 +2,10 @@ package org.kurup.yamba;
 
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
-import android.app.Activity;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,12 +18,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class StatusActivity extends BaseActivity implements OnClickListener,
-                                                        TextWatcher {
+public class StatusActivity extends BaseActivity implements OnClickListener, TextWatcher, LocationListener {
     private static final String TAG = "StatusActivity";
+    private static final long LOCATION_MIN_TIME = 3600000; // One hour
+    private static final long LOCATION_MIN_DISTANCE = 1000; // One kilometer
     EditText editText;
     Button updateButton;
     TextView textCount;
+    LocationManager locationManager;
+    Location location;
+    String provider;
 
     /** Called when the activity is first created. */
     @Override
@@ -32,16 +38,43 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
 
         // Find views
         editText = (EditText) findViewById(R.id.editText);
-        editText.addTextChangedListener(this);
-
         updateButton = (Button) findViewById(R.id.buttonUpdate);
         updateButton.setOnClickListener(this);
 
         textCount = (TextView) findViewById(R.id.textCount);
         textCount.setText(Integer.toString(140));
         textCount.setTextColor(Color.GREEN);
+        editText.addTextChangedListener(this);
     }
 
+    @Override
+        protected void onResume() {
+        super.onResume();
+        
+        // Setup location information
+        provider = yamba.getProvider();
+        if (!YambaApplication.LOCATION_PROVIDER_NONE.equals(provider)) {
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        } else {
+            locationManager = null;
+            location = null;
+        }
+
+        if (locationManager != null) {
+            location = locationManager.getLastKnownLocation(provider);
+            locationManager.requestLocationUpdates(provider, LOCATION_MIN_TIME, LOCATION_MIN_DISTANCE, this);
+        }
+    }
+
+    @Override
+        protected void onPause() {
+        super.onPause();
+        
+        if (locationManager != null) {
+            locationManager.removeUpdates(this);
+        }
+    }
+            
     // Called when button is clicked
     public void onClick(View v) {
         String status = editText.getText().toString();
@@ -55,12 +88,16 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
         @Override
             protected String doInBackground(String... statuses) {
             try {
+                // Check if we have the location
+                if (location != null) {
+                    double latlong[] = {location.getLatitude(), location.getLongitude()};
+                    yamba.getTwitter().setMyLocation(latlong);
+                }
                 Twitter.Status status = yamba.getTwitter().updateStatus(statuses[0]);
-                return "message posted";
-            } catch (TwitterException e) {
-                Log.e(TAG, e.toString());
-                e.printStackTrace();
-                return "failed to post";
+                return "Message posted.";
+            } catch (RuntimeException e) {
+                Log.e(TAG, "Failed to connect to Twitter service", e);
+                return "Failed to post.";
             }
         }
 
@@ -95,4 +132,21 @@ public class StatusActivity extends BaseActivity implements OnClickListener,
     public void onTextChanged(CharSequence s, int start, int before, int count) {
     }
 
+    // LocationLiistener methods
+    public void onLocationChanged(Location location) {
+        this.location = location;
+    }
+
+    public void onProviderDisabled(String provider) {
+        if (this.provider.equals(provider))
+            locationManager.removeUpdates(this);
+    }
+
+    public void onProviderEnabled(String provider) {
+        if (this.provider.equals(provider))
+            locationManager.requestLocationUpdates(this.provider, LOCATION_MIN_TIME, LOCATION_MIN_DISTANCE, this);
+    }
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
 }
